@@ -1,0 +1,14 @@
+---
+- name: Check system time on Raspberry Pi
+  hosts: 192.168.98.163
+  gather_facts: no
+
+  tasks:
+    - name: Get current system time
+      shell: ssh -o StrictHostKeyChecking=no pi@{{ ansible_host }} date
+      register: current_time
+      changed_when: false
+
+    - name: Print current system time
+      debug:
+        msg: "Current system time: {{ current_time.stdout }}"
