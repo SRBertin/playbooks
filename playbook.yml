@@ -1,7 +1,7 @@
 ---
 - name: Check system time on Raspberry Pi
   hosts: 192.168.98.163
-  gather_facts: no
+  gather_facts: false
 
   tasks:
     - name: Get current system time
