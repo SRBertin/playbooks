@@ -1,0 +1,22 @@
+---
+- name: Gather IP, MAC, and running containers information
+  hosts: 192.168.98.163
+  tasks:
+    - name: Get IP address
+      ansible.builtin.shell: ip -o -4 addr show eth0 | awk '{print $4}'
+      register: ip_address
+
+    - name: Get MAC address
+      ansible.builtin.shell: ip link show eth0 | awk '/ether/ {print $2}'
+      register: mac_address
+
+    - name: Get running containers
+      ansible.builtin.shell: docker ps --format '{{.Names}}'
+      register: running_containers
+
+    - name: Print IP, MAC, and running containers
+      ansible.builtin.debug:
+        msg: |
+          IP Address: {{ ip_address.stdout }}
+          MAC Address: {{ mac_address.stdout }}
+          Running Containers: {{ running_containers.stdout_lines | join(', ') }}
